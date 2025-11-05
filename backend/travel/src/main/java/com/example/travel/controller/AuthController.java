@@ -41,4 +41,10 @@ public class AuthController {
             return ResponseEntity.status(401).body("Invalid username or password");
         }
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout() {
+        // 清除令牌逻辑（如果需要，可以扩展为黑名单机制）
+        return ResponseEntity.ok("Logged out successfully");
+    }
 }
