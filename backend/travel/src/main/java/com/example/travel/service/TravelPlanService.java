@@ -113,4 +113,14 @@ public class TravelPlanService {
         // 保存更新后的旅行计划
         return travelPlanRepository.save(existingTravelPlan);
     }
+
+    /**
+     * 根据 ID 查找旅行计划
+     * @param travelPlanId 旅行计划 ID
+     * @return 对应的旅行计划对象
+     */
+    public TravelPlan findById(Long travelPlanId) {
+        return travelPlanRepository.findById(travelPlanId)
+                .orElseThrow(() -> new IllegalArgumentException("旅行计划未找到，ID: " + travelPlanId));
+    }
 }
