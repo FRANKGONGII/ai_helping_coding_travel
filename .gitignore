@@ -1,0 +1,53 @@
+# Node.js
+node_modules/
+dist/
+build/
+.env
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+# Editor directories and files
+.idea/
+.vscode/
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.log
+*.bak
+*.swp
+*.swo
+*.iml
+.project
+.classpath
+.settings/
+.factorypath
+.apt_generated
+.springBeans
+.sts4-cache/
+
+# Logs
+logs/
+*.log
+
+# OS generated files
+.DS_Store
+.Trashes
+Thumbs.db
