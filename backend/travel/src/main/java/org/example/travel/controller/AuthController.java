@@ -1,7 +1,8 @@
-package com.example.travel.controller;
+package org.example.travel.controller;
 
-import com.example.travel.entity.User;
-import com.example.travel.service.UserService;
+import org.example.travel.entity.User;
+import org.example.travel.service.UserService;
+import org.example.travel.dto.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,23 +21,21 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestParam String username,
-                                       @RequestParam String password,
-                                       @RequestParam String email) {
+    public ResponseEntity<?> register(@RequestBody User user) {
         try {
-            User user = userService.registerUser(username, password, email);
-            return ResponseEntity.ok(user);
+            User registeredUser = userService.registerUser(user.getUsername(), user.getPassword(), user.getEmail());
+            return ResponseEntity.ok(registeredUser);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String username,
-                                    @RequestParam String password) {
-        Optional<User> userOptional = userService.loginUser(username, password);
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        Optional<User> userOptional = userService.loginUser(loginRequest.getUsername(), loginRequest.getPassword());
         if (userOptional.isPresent()) {
-            return ResponseEntity.ok(userOptional.get());
+            System.out.println(userOptional.get().getId());
+            return ResponseEntity.ok(userOptional.get().getId());
         } else {
             return ResponseEntity.status(401).body("Invalid username or password");
         }

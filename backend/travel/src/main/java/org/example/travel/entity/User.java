@@ -1,8 +1,12 @@
-package com.example.travel.entity;
+package org.example.travel.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+import lombok.Data;
+
+
 import java.time.LocalDateTime;
 
+@Data
 @Entity
 @Table(name = "users")
 public class User {

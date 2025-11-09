@@ -1,7 +1,7 @@
-package com.example.travel.controller;
+package org.example.travel.controller;
 
-import com.example.travel.entity.TravelPlanRecord;
-import com.example.travel.service.TravelPlanRecordService;
+import org.example.travel.entity.TravelPlanRecord;
+import org.example.travel.service.TravelPlanRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

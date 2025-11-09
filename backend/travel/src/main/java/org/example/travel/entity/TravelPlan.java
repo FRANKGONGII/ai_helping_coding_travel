@@ -1,6 +1,8 @@
-package com.example.travel.entity;
+package org.example.travel.entity;
 
-import javax.persistence.*;
+
+
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -27,22 +29,22 @@ public class TravelPlan {
     @Column(nullable = false)
     private String peopleNum;
 
-    @Column(name = "start_date", nullable = false)
+    @Column(name = "start_date")
     private LocalDate startDate;
 
-    @Column(name = "end_date", nullable = false)
+    @Column(name = "end_date")
     private LocalDate endDate;
 
     @Column
     private Double budget;
 
-    @Column(columnDefinition = "JSON")
+    @Column
     private String preferences;
 
-    @Column(columnDefinition = "JSON")
+    @Column
     private String details;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")

@@ -1,7 +1,7 @@
-package com.example.travel.service;
+package org.example.travel.service;
 
-import com.example.travel.entity.TravelPlan;
-import com.example.travel.repository.TravelPlanRepository;
+import org.example.travel.entity.TravelPlan;
+import org.example.travel.repository.TravelPlanRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,14 +24,9 @@ public class TravelPlanService {
     /**
      * 创建旅行计划
      * @param travelPlan 旅行计划对象
-     * @param aiGeneratedResult AI 生成的原始行程数据
      * @return 保存后的旅行计划
      */
-    public TravelPlan createTravelPlan(TravelPlan travelPlan, String aiGeneratedResult) {
-        // 格式化 AI 生成的结果
-        String formattedDetails = aiResultFormatter.formatAIResult(aiGeneratedResult).toString();
-        travelPlan.setDetails(formattedDetails);
-
+    public TravelPlan createTravelPlan(TravelPlan travelPlan) {
         // 保存旅行计划到数据库
         return travelPlanRepository.save(travelPlan);
     }

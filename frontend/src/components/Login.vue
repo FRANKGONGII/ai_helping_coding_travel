@@ -3,8 +3,8 @@
     <h1>登录</h1>
     <form @submit.prevent="login">
       <div>
-        <label for="email">邮箱:</label>
-        <input type="email" id="email" v-model="form.email" required />
+        <label for="username">用户名:</label>
+        <input type="text" id="username" v-model="form.username" required />
       </div>
       <div>
         <label for="password">密码:</label>
@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       form: {
-        email: '',
+        username: '',
         password: ''
       }
     };
@@ -32,8 +32,11 @@ export default {
     async login() {
       try {
         const response = await axios.post('/api/auth/login', this.form);
-        alert('登录成功！');
-        this.$router.push('/dashboard');
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userId', response.data); // 后端直接返回 userId
+        console.log(response.data)
+        alert('登录成功！' + localStorage.getItem('userId'));
+        this.$router.push('/');
       } catch (error) {
         alert('登录失败，请检查邮箱或密码！');
         console.error(error);

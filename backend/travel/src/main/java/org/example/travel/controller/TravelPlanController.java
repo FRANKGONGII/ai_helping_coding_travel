@@ -1,13 +1,13 @@
-package com.example.travel.controller;
+package org.example.travel.controller;
 
-import com.example.travel.entity.TravelPlan;
-import com.example.travel.service.TravelPlanService;
+import org.example.travel.entity.TravelPlan;
+import org.example.travel.service.TravelPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/travel-plans")
+@RequestMapping("/api/travelPlan")
 public class TravelPlanController {
 
     private final TravelPlanService travelPlanService;
@@ -26,7 +26,14 @@ public class TravelPlanController {
     @PostMapping
     public ResponseEntity<TravelPlan> createTravelPlan(@RequestBody TravelPlan travelPlan,
                                                        @RequestParam String aiGeneratedResult) {
-        TravelPlan createdPlan = travelPlanService.createTravelPlan(travelPlan, aiGeneratedResult);
+        TravelPlan createdPlan = travelPlanService.createTravelPlan(travelPlan);
         return ResponseEntity.ok(createdPlan);
+    }
+
+    @PostMapping("/save")
+    public ResponseEntity<TravelPlan> saveTravelPlan(@RequestBody TravelPlan travelPlan) {
+        System.out.println(travelPlan.getPeopleNum());
+        TravelPlan savedPlan = travelPlanService.createTravelPlan(travelPlan);
+        return ResponseEntity.ok(savedPlan);
     }
 }

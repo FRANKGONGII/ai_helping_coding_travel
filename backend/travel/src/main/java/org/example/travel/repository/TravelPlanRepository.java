@@ -1,6 +1,6 @@
-package com.example.travel.repository;
+package org.example.travel.repository;
 
-import com.example.travel.entity.TravelPlan;
+import org.example.travel.entity.TravelPlan;
 
 import java.time.LocalDate;
 import java.util.List;

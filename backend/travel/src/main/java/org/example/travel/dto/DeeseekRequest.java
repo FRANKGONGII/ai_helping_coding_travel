@@ -1,5 +1,5 @@
 
-package com.example.travel.dto;
+package org.example.travel.dto;
 
 import java.util.List;
 

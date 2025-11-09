@@ -1,6 +1,6 @@
-package com.example.travel.repository;
+package org.example.travel.repository;
 
-import com.example.travel.entity.TravelPlanRecord;
+import org.example.travel.entity.TravelPlanRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

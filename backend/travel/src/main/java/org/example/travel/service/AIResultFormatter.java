@@ -1,4 +1,4 @@
-package com.example.travel.service;
+package org.example.travel.service;
 
 import org.springframework.stereotype.Service;
 import org.json.JSONObject;

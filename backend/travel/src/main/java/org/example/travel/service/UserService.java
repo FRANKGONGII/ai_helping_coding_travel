@@ -1,11 +1,12 @@
-package com.example.travel.service;
+package org.example.travel.service;
 
-import com.example.travel.entity.User;
-import com.example.travel.repository.UserRepository;
+import org.example.travel.entity.User;
+import org.example.travel.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -37,6 +38,7 @@ public class UserService {
         user.setUsername(username);
         user.setPassword(encryptedPassword);
         user.setEmail(email);
+        user.setCreatedAt(LocalDateTime.now());
         return userRepository.save(user);
     }
 

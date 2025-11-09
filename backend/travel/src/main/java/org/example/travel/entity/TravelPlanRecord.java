@@ -1,10 +1,11 @@
-package com.example.travel.entity;
+package org.example.travel.entity;
 
 
+import jakarta.persistence.*;
 import lombok.Data;
 
 
-import javax.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,16 +20,16 @@ public class TravelPlanRecord {
     @Column(name = "travel_plan_id", nullable = false)
     private Long travelPlanId;
 
-    @Column(nullable = false)
+    @Column
     private String content;
 
-    @Column(nullable = false)
+    @Column
     private Double money;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @Column
     private LocalDateTime updatedAt;
 
     @PrePersist

@@ -1,7 +1,7 @@
-package com.example.travel.service;
+package org.example.travel.service;
 
-import com.example.travel.entity.TravelPlanRecord;
-import com.example.travel.repository.TravelPlanRecordRepository;
+import org.example.travel.entity.TravelPlanRecord;
+import org.example.travel.repository.TravelPlanRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
