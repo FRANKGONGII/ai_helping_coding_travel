@@ -39,7 +39,10 @@
 
           <div v-if="showAddRecordForm" class="add-record-form">
             <h4>新增开销记录</h4>
-            <input type="text" v-model="newRecord.content" placeholder="描述" />
+            <div class="input-with-voice">
+              <input type="text" v-model="newRecord.content" placeholder="描述" />
+              <button @click="startVoiceInput" :disabled="isRecording">{{ isRecording ? '正在录音...' : '语音输入' }}</button>
+            </div>
             <input type="number" v-model="newRecord.money" placeholder="金额" />
             <input type="datetime-local" v-model="newRecord.consumptionTime" placeholder="消费时间" />
             <button @click="addExpenseRecord" class="save-button">保存</button>
@@ -81,6 +84,7 @@ export default {
         money: 0,
         consumptionTime: new Date().toISOString().slice(0, 19),
       },
+      isRecording: false, // 新增录音状态
     };
   },
   created() {
@@ -90,16 +94,6 @@ export default {
     }
   },
   methods: {
-    // checkLoginStatus() {
-    //   const token = localStorage.getItem('userToken');
-    //   if (token) {
-    //     this.isLoggedIn = true;
-    //     this.userId = '1'; // Simulate logged-in user
-    //   } else {
-    //     this.isLoggedIn = false;
-    //     this.userId = null;
-    //   }
-    // },
     async fetchTravelPlans() {
       if (!this.userId) return;
       try {
@@ -157,8 +151,43 @@ export default {
         consumptionTime: new Date().toISOString().slice(0, 19),
       };
     },
+    startVoiceInput() {
+      if (!('webkitSpeechRecognition' in window)) {
+        alert('抱歉，您的浏览器不支持语音识别。请使用 Chrome 浏览器。');
+        return;
+      }
+
+      const recognition = new webkitSpeechRecognition();
+      recognition.lang = 'zh-CN'; // 设置识别语言为中文
+      recognition.interimResults = false; // 只返回最终结果
+      recognition.maxAlternatives = 1; // 只返回一个最有可能的结果
+
+      recognition.onstart = () => {
+        this.isRecording = true;
+        console.log('语音识别开始...');
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        this.newRecord.content = transcript;
+        console.log('识别结果:', transcript);
+      };
+
+      recognition.onerror = (event) => {
+        this.isRecording = false;
+        console.error('语音识别错误:', event.error);
+        alert('语音识别出错，请重试。');
+      };
+
+      recognition.onend = () => {
+        this.isRecording = false;
+        console.log('语音识别结束。');
+      };
+
+      recognition.start();
+    },
   },
-};
+}
 </script>
 
 <style scoped>
@@ -312,12 +341,22 @@ export default {
 }
 
 .add-record-form input {
-  padding: 8px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-}
+   padding: 8px;
+   border: 1px solid #ced4da;
+   border-radius: 4px;
+ }
 
-.save-button {
+ .input-with-voice {
+   display: flex;
+   gap: 10px;
+   align-items: center;
+ }
+
+ .input-with-voice input {
+   flex-grow: 1;
+ }
+
+ .save-button {
   background-color: #007bff; /* Blue */
   color: white;
   border: none;
