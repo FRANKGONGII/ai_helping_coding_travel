@@ -99,4 +99,27 @@ public class TravelPlanController {
         travelPlanRecordService.deleteRecord(id);
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * 删除旅行计划
+     * @param id 旅行计划ID
+     * @return 无内容响应
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTravelPlan(@PathVariable Long id) {
+        travelPlanService.deleteTravelPlan(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * 更新旅行计划
+     * @param id 旅行计划ID
+     * @param travelPlan 更新后的旅行计划对象
+     * @return 更新后的旅行计划
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<TravelPlan> updateTravelPlan(@PathVariable Long id, @RequestBody TravelPlan travelPlan) {
+        TravelPlan updatedPlan = travelPlanService.updateTravelPlan(id, travelPlan);
+        return ResponseEntity.ok(updatedPlan);
+    }
 }

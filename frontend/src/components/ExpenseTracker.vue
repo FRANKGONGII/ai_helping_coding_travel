@@ -8,6 +8,20 @@
     <div class="content-wrapper">
       <div class="left-panel">
         <h2>我的旅行计划</h2>
+        <button @click="showAddTravelPlanForm = true" class="add-button">新增旅行计划</button>
+
+        <div v-if="showAddTravelPlanForm" class="add-travel-plan-form">
+          <h4>{{ editingTravelPlan ? '编辑旅行计划' : '新增旅行计划' }}</h4>
+          <input type="text" v-model="newTravelPlan.destination" placeholder="目的地" />
+          <input type="text" v-model="newTravelPlan.origin" placeholder="出发地" />
+          <input type="number" v-model="newTravelPlan.peopleNum" placeholder="人数" />
+          <input type="date" v-model="newTravelPlan.startDate" placeholder="开始日期" />
+          <input type="date" v-model="newTravelPlan.endDate" placeholder="结束日期" />
+          <input type="text" v-model="newTravelPlan.preferences" placeholder="偏好" />
+          <button @click="saveTravelPlan" class="save-button">保存</button>
+          <button @click="showAddTravelPlanForm = false; editingTravelPlan = null; resetNewTravelPlanForm();" class="cancel-button">取消</button>
+        </div>
+
         <div v-if="!isLoggedIn" class="login-prompt">
           <p>请登录以查看您的旅行计划。</p>
           <router-link to="/login">点击此处登录</router-link>
@@ -25,6 +39,8 @@
             <h3>{{ plan.name }}</h3>
             <p>目的地: {{ plan.destination }}</p>
             <p>日期: {{ plan.startDate }} - {{ plan.endDate }}</p>
+            <button @click.stop="editTravelPlan(plan)" class="edit-button">编辑</button>
+            <button @click.stop="deleteTravelPlan(plan.id)" class="delete-button">删除</button>
           </div>
         </div>
       </div>
@@ -85,6 +101,18 @@ export default {
         consumptionTime: new Date().toISOString().slice(0, 19),
       },
       isRecording: false, // 新增录音状态
+      showAddTravelPlanForm: false, // 控制新增旅行计划表单的显示
+      newTravelPlan: {
+        destination: '',
+        origin: '',
+        peopleNum: 1,
+        startDate: null,
+        endDate: null,
+        budget: 0,
+        preferences: '',
+        details: '',
+      },
+      editingTravelPlan: null, // 存储正在编辑的旅行计划
     };
   },
   created() {
@@ -101,6 +129,44 @@ export default {
         this.travelPlans = response.data;
       } catch (error) {
         console.error('Error fetching travel plans:', error);
+      }
+    },
+    async saveTravelPlan() {
+      if (!this.userId) {
+        alert('请先登录！');
+        return;
+      }
+
+      try {
+        if (this.editingTravelPlan) {
+          // 更新现有旅行计划
+          const planToUpdate = {
+            ...this.newTravelPlan,
+            peopleNum: Number(this.newTravelPlan.peopleNum), // 确保 peopleNum 是数字类型
+          };
+          const response = await axios.put(`/api/travelPlan/${planToUpdate.id}`, planToUpdate);
+          const index = this.travelPlans.findIndex(plan => plan.id === response.data.id);
+          if (index !== -1) {
+            this.travelPlans.splice(index, 1, response.data);
+          }
+          this.editingTravelPlan = null;
+        } else {
+          // 新增旅行计划
+          const planToAdd = {
+            ...this.newTravelPlan,
+            userId: this.userId,
+            peopleNum: Number(this.newTravelPlan.peopleNum), // 确保 peopleNum 是数字类型
+          };
+          const response = await axios.post('/api/travelPlan', planToAdd, {
+            params: { aiGeneratedResult: '' }
+          });
+          this.travelPlans.push(response.data);
+        }
+        this.showAddTravelPlanForm = false;
+        this.resetNewTravelPlanForm();
+      } catch (error) {
+        console.error('Error saving travel plan:', error);
+        alert('保存旅行计划失败。');
       }
     },
     async selectTravelPlan(plan) {
@@ -150,6 +216,49 @@ export default {
         money: 0,
         consumptionTime: new Date().toISOString().slice(0, 19),
       };
+    },
+    resetNewTravelPlanForm() {
+      this.newTravelPlan = {
+        destination: '',
+        origin: '',
+        peopleNum: 1,
+        startDate: null,
+        endDate: null,
+        budget: 0,
+        preferences: '',
+        details: '',
+      };
+    },
+    async deleteTravelPlan(planId) {
+      if (!confirm('确定要删除这个旅行计划吗？')) return;
+      try {
+        await axios.delete(`/api/travelPlan/${planId}`);
+        this.travelPlans = this.travelPlans.filter(plan => plan.id !== planId);
+        if (this.selectedTravelPlan && this.selectedTravelPlan.id === planId) {
+          this.selectedTravelPlan = null;
+          this.expenseRecords = [];
+        }
+      } catch (error) {
+        console.error('Error deleting travel plan:', error);
+        alert('删除旅行计划失败。'  + planId + (error.response ? error.response.data : error.message));
+      }
+    },
+    editTravelPlan(plan) {
+      // 复制一份，避免直接修改原始数据
+      const planToEdit = { ...plan };
+
+      // 格式化日期为 YYYY-MM-DD，以适应 input type="date"
+      if (planToEdit.startDate) {
+        planToEdit.startDate = new Date(planToEdit.startDate).toISOString().slice(0, 10);
+      }
+      if (planToEdit.endDate) {
+        planToEdit.endDate = new Date(planToEdit.endDate).toISOString().slice(0, 10);
+      }
+
+      this.editingTravelPlan = planToEdit;
+      // 将编辑中的旅行计划数据填充到 newTravelPlan 中，以便表单显示
+      this.newTravelPlan = { ...planToEdit };
+      this.showAddTravelPlanForm = true;
     },
     startVoiceInput() {
       if (!('webkitSpeechRecognition' in window)) {
@@ -328,6 +437,73 @@ export default {
 
 .delete-button:hover {
   background-color: #c82333;
+}
+
+.add-travel-plan-form {
+  background-color: #f0f2f5;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns */
+  gap: 15px; /* Space between grid items */
+  align-items: center;
+}
+
+.add-travel-plan-form h4 {
+  grid-column: 1 / -1; /* Span across all columns */
+  text-align: center;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.add-travel-plan-form input[type="text"],
+.add-travel-plan-form input[type="number"],
+.add-travel-plan-form input[type="date"],
+.add-travel-plan-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.add-travel-plan-form textarea {
+  grid-column: 1 / -1; /* Textarea spans full width */
+  min-height: 80px;
+  resize: vertical;
+}
+
+.add-travel-plan-form .save-button,
+.add-travel-plan-form .cancel-button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+  width: auto; /* Adjust button width */
+}
+
+.add-travel-plan-form .save-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  justify-self: end; /* Align to the right */
+}
+
+.add-travel-plan-form .save-button:hover {
+  background-color: #218838;
+}
+
+.add-travel-plan-form .cancel-button {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  justify-self: start; /* Align to the left */
+}
+
+.add-travel-plan-form .cancel-button:hover {
+  background-color: #5a6268;
 }
 
 .add-record-form {
