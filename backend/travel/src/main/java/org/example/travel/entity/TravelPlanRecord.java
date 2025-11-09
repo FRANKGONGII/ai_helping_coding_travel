@@ -27,6 +27,9 @@ public class TravelPlanRecord {
     private Double money;
 
     @Column
+    private LocalDateTime consumptionTime;
+
+    @Column
     private LocalDateTime createdAt;
 
     @Column

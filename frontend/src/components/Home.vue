@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <!-- 顶部导航/用户状态区域 -->
-    <header class="dashboard-header">
+    <!-- <header class="dashboard-header">
       <div class="logo">旅行计划助手</div>
       <nav class="user-actions">
         <template v-if="isLoggedIn">
@@ -13,12 +13,15 @@
           <router-link to="/register" class="nav-link">注册</router-link>
         </template>
       </nav>
-    </header>
+    </header> -->
 
     <!-- 主要内容区域 -->
     <main class="dashboard-main">
       <aside class="sidebar">
         <h2>智能行程规划</h2>
+        <!-- <router-link to="/" class="sidebar-nav-item">智能行程规划</router-link>
+        <router-link to="/map" class="sidebar-nav-item">地图定位导航</router-link>
+        <router-link to="/expenses" class="sidebar-nav-item">旅行记录开销</router-link> -->
         <form @submit.prevent="generatePlan" class="plan-form">
           <div class="form-group">
             <label for="destination">目的地:</label>
@@ -87,8 +90,8 @@ export default {
   name: 'Home',
   data() {
     return {
-      isLoggedIn: localStorage.getItem('isLoggedIn') === 'true',
-      userId: localStorage.getItem('userId') || null,
+      // isLoggedIn: localStorage.getItem('isLoggedIn') === 'true',
+      // userId: localStorage.getItem('userId') || null,
       travelPlan: {
         destination: '',
         dates: '',
@@ -111,24 +114,19 @@ export default {
     // this.checkLoginStatus(); // 已经通过data属性初始化，无需再次检查
   },
   methods: {
-    checkLoginStatus() {
-      // 实际应用中，这里会检查 localStorage 中的 token 或 Vuex store 中的状态
-      this.isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-      this.userId = localStorage.getItem('userId') || null;
-    },
-    // login() { // 登录逻辑已移至Login.vue
-    //   // 模拟登录逻辑
-    //   this.isLoggedIn = true;
-    //   this.username = 'TestUser';
-    //   alert('登录成功！');
+    // checkLoginStatus() {
+    //   // 实际应用中，这里会检查 localStorage 中的 token 或 Vuex store 中的状态
+    //   this.isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    //   this.userId = localStorage.getItem('userId') || null;
     // },
     logout() {
       localStorage.removeItem('isLoggedIn');
       localStorage.removeItem('userId');
-      this.isLoggedIn = false;
-      this.userId = null;
+      // this.isLoggedIn = false;
+      // this.userId = null;
       this.aiPlanResult = ''; // 清空AI计划结果
       alert('已登出。');
+      this.$router.push('/login'); // 登出后跳转到登录页
     },
     viewProfile() {
       alert('查看个人信息功能待实现。');
@@ -209,8 +207,36 @@ export default {
       this.isLoading = true; // 开始加载
       this.error = null; // 清除之前的错误
       this.aiPlanResult = ''; // 清空之前的计划
-      const requestBody = { question: this.voiceInputResult };
-  
+
+      let questionParts = [];
+      if (this.voiceInputResult) {
+        questionParts.push(this.voiceInputResult);
+      }
+
+      let formDetails = [];
+      if (this.travelPlan.destination) {
+        formDetails.push(`目的地是${this.travelPlan.destination}`);
+      }
+      if (this.travelPlan.dates) {
+        formDetails.push(`日期是${this.travelPlan.dates}`);
+      }
+      if (this.travelPlan.budget) {
+        formDetails.push(`预算是${this.travelPlan.budget}`);
+      }
+      if (this.travelPlan.travelers) {
+        formDetails.push(`同行人数是${this.travelPlan.travelers}`);
+      }
+      if (this.travelPlan.preferences) {
+        formDetails.push(`旅行偏好是${this.travelPlan.preferences}`);
+      }
+
+      if (formDetails.length > 0) {
+        questionParts.push(`同时参考以下表单信息：${formDetails.join('，')}`);
+      }
+
+      const questionText = questionParts.join('。');
+      const requestBody = { question: questionText };
+
       try {
           this.aiPlanResult = '正在根据语音结果生成旅行计划，请稍候...';
           const response = await axios.post('/api/ai/travelPlan', requestBody, {
@@ -304,7 +330,7 @@ export default {
   color: #333;
 }
 
-.dashboard-header {
+/* .dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -336,7 +362,7 @@ export default {
   border: none;
   cursor: pointer;
   font-size: 1em;
-}
+} */
 
 .dashboard-main {
   display: flex;
@@ -359,6 +385,27 @@ export default {
   margin-bottom: 25px;
   font-size: 1.6em;
   text-align: center;
+}
+
+.sidebar-nav-item {
+  display: block;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  background-color: #f0f2f5;
+  color: #2c3e50;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar-nav-item:hover {
+  background-color: #e0e2e5;
+  color: #42b983;
+}
+
+.sidebar-nav-item.router-link-exact-active {
+  background-color: #42b983;
+  color: #fff;
 }
 
 .plan-form .form-group {
