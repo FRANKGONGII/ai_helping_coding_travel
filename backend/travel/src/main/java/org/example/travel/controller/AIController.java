@@ -47,7 +47,10 @@ public class AIController {
 //            throw new IllegalArgumentException("DEEPSEEK_API_KEY environment variable not set.");
 //        }
 
-        apiKey = "sk-ac1de879f40a4629a2f5f38653d3a5e3";
+        // apiKey = "sk-ac1de879f40a4629a2f5f38653d3a5e3";
+        if (apiKey == null || apiKey.isEmpty()) {
+            throw new IllegalArgumentException("DEEPSEEK_API_KEY environment variable not set.");
+        }
 
         Map<String, Object> messageSystem = new HashMap<>();
         messageSystem.put("role", "system");
@@ -119,7 +122,10 @@ public class AIController {
 //        if (apiKey == null || apiKey.isEmpty()) {
 //            throw new IllegalArgumentException("DEEPSEEK_API_KEY environment variable not set.");
 //        }
-        apiKey = "sk-ac1de879f40a4629a2f5f38653d3a5e3";
+        // apiKey = "sk-ac1de879f40a4629a2f5f38653d3a5e3";
+        if (apiKey == null || apiKey.isEmpty()) {
+            throw new IllegalArgumentException("DEEPSEEK_API_KEY environment variable not set.");
+        }
 
         Map<String, Object> messageSystem = new HashMap<>();
         messageSystem.put("role", "system");

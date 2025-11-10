@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend/travel
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      DEEPSEEK_API_KEY: "your_deepseek_api_key_here" # 替换为您的 DeepSeek API 密钥
+    networks:
+      - travel-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VUE_APP_BAIDU_MAP_AK: "your_baidu_map_ak_here" # 替换为您的百度地图 API 密钥
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - travel-network
+
+networks:
+  travel-network:
+    driver: bridge
