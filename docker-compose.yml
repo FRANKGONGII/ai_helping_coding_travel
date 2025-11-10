@@ -9,6 +9,7 @@ services:
       - "8080:8080"
     environment:
       DEEPSEEK_API_KEY: "your_deepseek_api_key_here" # 替换为您的 DeepSeek API 密钥
+      DB_PASSWORD: "your_database_password_here" # 替换为您的数据库密码
     networks:
       - travel-network
 

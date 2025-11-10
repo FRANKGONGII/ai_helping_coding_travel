@@ -25,6 +25,7 @@ EXPOSE 8080
 
 # 定义 DEEPSEEK_API_KEY 环境变量，在运行容器时需要设置
 ENV DEEPSEEK_API_KEY=""
+ENV DB_PASSWORD=""
 
 # 运行应用程序
 ENTRYPOINT ["java","-jar","app.jar"]
