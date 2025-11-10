@@ -37,6 +37,7 @@ export default {
         console.log(response.data)
         alert('登录成功！' + localStorage.getItem('userId'));
         this.$router.push('/');
+        this.$bus.$emit('login-status-changed'); // 登录成功后触发事件
       } catch (error) {
         alert('登录失败，请检查邮箱或密码！');
         console.error(error);

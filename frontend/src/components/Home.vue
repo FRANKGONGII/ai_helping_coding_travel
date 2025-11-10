@@ -90,8 +90,8 @@ export default {
   name: 'Home',
   data() {
     return {
-      // isLoggedIn: localStorage.getItem('isLoggedIn') === 'true',
-      // userId: localStorage.getItem('userId') || null,
+      isLoggedIn: localStorage.getItem('isLoggedIn') === 'true',
+      userId: localStorage.getItem('userId') || null,
       travelPlan: {
         destination: '',
         dates: '',
@@ -122,8 +122,8 @@ export default {
     logout() {
       localStorage.removeItem('isLoggedIn');
       localStorage.removeItem('userId');
-      // this.isLoggedIn = false;
-      // this.userId = null;
+      this.isLoggedIn = false;
+      this.userId = null;
       this.aiPlanResult = ''; // 清空AI计划结果
       alert('已登出。');
       this.$router.push('/login'); // 登出后跳转到登录页

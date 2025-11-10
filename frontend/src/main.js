@@ -8,6 +8,8 @@ Vue.config.productionTip = false
 // 配置 axios 的基础 URL，指向后端服务
 axios.defaults.baseURL = 'http://localhost:8081';
 
+Vue.prototype.$bus = new Vue();
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

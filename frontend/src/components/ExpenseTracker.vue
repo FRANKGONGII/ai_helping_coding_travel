@@ -39,9 +39,18 @@
             <h3>{{ plan.name }}</h3>
             <p>目的地: {{ plan.destination }}</p>
             <p>日期: {{ plan.startDate }} - {{ plan.endDate }}</p>
+            <button @click.stop="showPlanDetails(plan.details)" class="detail-button">查看详情</button>
             <button @click.stop="editTravelPlan(plan)" class="edit-button">编辑</button>
             <button @click.stop="deleteTravelPlan(plan.id)" class="delete-button">删除</button>
           </div>
+        </div>
+      </div>
+      <!-- 旅行计划详情弹窗 -->
+      <div v-if="showDetailsModal" class="modal-overlay" @click.self="hidePlanDetails">
+        <div class="modal-content">
+          <h3>旅行计划详情</h3>
+          <p>{{ currentPlanDetails }}</p>
+          <button @click="hidePlanDetails" class="close-button">关闭</button>
         </div>
       </div>
       <div class="right-panel">
@@ -113,6 +122,8 @@ export default {
         details: '',
       },
       editingTravelPlan: null, // 存储正在编辑的旅行计划
+      showDetailsModal: false, // 控制详情弹窗的显示
+      currentPlanDetails: '', // 存储当前要显示的旅行计划详情
     };
   },
   created() {
@@ -122,6 +133,14 @@ export default {
     }
   },
   methods: {
+    showPlanDetails(details) {
+      this.currentPlanDetails = details;
+      this.showDetailsModal = true;
+    },
+    hidePlanDetails() {
+      this.showDetailsModal = false;
+      this.currentPlanDetails = '';
+    },
     async fetchTravelPlans() {
       if (!this.userId) return;
       try {
@@ -503,6 +522,77 @@ export default {
 }
 
 .add-travel-plan-form .cancel-button:hover {
+  background-color: #5a6268;
+}
+
+.detail-button {
+  background-color: #17a2b8; /* Info blue */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.8em;
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.detail-button:hover {
+  background-color: #138496;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.modal-content p {
+  white-space: pre-wrap; /* 保持文本格式，包括换行符 */
+  max-height: 400px; /* 限制高度 */
+  overflow-y: auto; /* 允许滚动 */
+  margin-bottom: 20px;
+  line-height: 1.6;
+  color: #555;
+}
+
+.modal-content .close-button {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+  float: right; /* Align to the right */
+}
+
+.modal-content .close-button:hover {
   background-color: #5a6268;
 }
 

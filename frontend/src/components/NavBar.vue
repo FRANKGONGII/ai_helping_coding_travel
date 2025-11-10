@@ -36,8 +36,19 @@ export default {
       this.userId = null;
       alert('已登出。');
       this.$router.push('/login'); // 登出后跳转到登录页
+      this.$bus.$emit('login-status-changed'); // 登出后也触发事件
     },
+    updateLoginStatus() {
+      this.isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      this.userId = localStorage.getItem('userId') || null;
+    }
   },
+  created() {
+    this.$bus.$on('login-status-changed', this.updateLoginStatus);
+  },
+  beforeDestroy() {
+    this.$bus.$off('login-status-changed', this.updateLoginStatus);
+  }
 };
 </script>
 
