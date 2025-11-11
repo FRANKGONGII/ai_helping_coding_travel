@@ -7,7 +7,10 @@ WORKDIR /app
 # 复制 Maven 的 pom.xml 文件，这样 Docker 可以在不重新下载依赖的情况下缓存构建步骤
 COPY pom.xml .
 COPY src ./src
+COPY mvnw .
+COPY .mvn ./.mvn
 
+RUN chmod +x mvnw
 # 构建 Spring Boot 应用
 RUN ./mvnw clean package -DskipTests
 

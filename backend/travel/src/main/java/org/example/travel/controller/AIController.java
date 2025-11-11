@@ -43,11 +43,11 @@ public class AIController {
         System.out.println(question);
 
         String apiKey = System.getenv("DEEPSEEK_API_KEY"); // 从环境变量获取 API Key
-//        if (apiKey == null || apiKey.isEmpty()) {
-//            throw new IllegalArgumentException("DEEPSEEK_API_KEY environment variable not set.");
-//        }
+        if (apiKey == null || apiKey.isEmpty()) {
+            throw new IllegalArgumentException("DEEPSEEK_API_KEY environment variable not set.");
+        }
 
-        // apiKey = "sk-ac1de879f40a4629a2f5f38653d3a5e3";
+
         if (apiKey == null || apiKey.isEmpty()) {
             throw new IllegalArgumentException("DEEPSEEK_API_KEY environment variable not set.");
         }
@@ -119,10 +119,10 @@ public class AIController {
         TravelPlan travelPlan = travelPlanService.findById(travelPlanId);
 
         String apiKey = System.getenv("DEEPSEEK_API_KEY");
-//        if (apiKey == null || apiKey.isEmpty()) {
-//            throw new IllegalArgumentException("DEEPSEEK_API_KEY environment variable not set.");
-//        }
-        // apiKey = "sk-ac1de879f40a4629a2f5f38653d3a5e3";
+        if (apiKey == null || apiKey.isEmpty()) {
+            throw new IllegalArgumentException("DEEPSEEK_API_KEY environment variable not set.");
+        }
+        // String apiKey = "sk-ac1de879f40a4629a2f5f38653d3a5e3";
         if (apiKey == null || apiKey.isEmpty()) {
             throw new IllegalArgumentException("DEEPSEEK_API_KEY environment variable not set.");
         }

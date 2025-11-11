@@ -42,9 +42,9 @@ export default {
   },
   methods: {
     loadBaiduMapScript() {
-      // const AK = 'CW452WC0MtvrVEn7NfrFcHP9VdclwQOZ';
+      const AK = 'CW452WC0MtvrVEn7NfrFcHP9VdclwQOZ';
       //  // 请替换为您的百度地图API密钥
-      const AK = process.env.VUE_APP_BAIDU_MAP_AK; // 从环境变量获取百度地图API密钥
+      // const AK = process.env.VUE_APP_BAIDU_MAP_AK; // 从环境变量获取百度地图API密钥
       if (!AK) {
         console.error('Baidu Map API Key (VUE_APP_BAIDU_MAP_AK) is not set in environment variables.');
         return;
