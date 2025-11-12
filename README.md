@@ -4,6 +4,12 @@
 这是一个旅行规划应用，旨在帮助用户轻松规划和管理他们的旅行。它集成了用户认证、AI 辅助规划和地图展示等功能，提供了一个全面的旅行规划体验。
 https://github.com/FRANKGONGII/ai_helping_coding_travel.git
 
+## 镜像拉取
+image已经上传到docker hub，使用以下命令拉取
+`docker pull gyjgyj/ai_helping_coding_travel-frontend:latest`
+`docker pull gyjgyj/ai_helping_coding_travel-backend:latest`
+
+
 ## 功能点介绍
 
 ### 1. 用户认证
