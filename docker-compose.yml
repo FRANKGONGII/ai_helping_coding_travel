@@ -2,29 +2,27 @@ version: '3.8'
 
 services:
   backend:
-    build:
-      context: ./backend/travel
-      dockerfile: Dockerfile
+    image: gyjgyj/ai_helping_coding_travel-backend:latest
+    container_name: travel-backend
     ports:
-      - "8080:8080"
+      - "8081:8081"
     environment:
-      DEEPSEEK_API_KEY: "your_deepseek_api_key_here" # 替换为您的 DeepSeek API 密钥
-      DB_PASSWORD: "your_database_password_here" # 替换为您的数据库密码
+      DEEPSEEK_API_KEY: "" # 替换为您的 DeepSeek API 密钥
+      DB_PASSWORD: "" # 替换为您的数据库密码
     networks:
       - travel-network
+    pull_policy: never  # 强制使用本地镜像
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-      args:
-        VUE_APP_BAIDU_MAP_AK: "your_baidu_map_ak_here" # 替换为您的百度地图 API 密钥
+    image: gyjgyj/ai_helping_coding_travel-frontend:latest
+    container_name: travel-frontend
     ports:
       - "80:80"
     depends_on:
       - backend
     networks:
       - travel-network
+    pull_policy: never  # 强制使用本地镜像
 
 networks:
   travel-network:

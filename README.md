@@ -5,9 +5,11 @@
 https://github.com/FRANKGONGII/ai_helping_coding_travel.git
 
 ## 镜像拉取
-image已经上传到docker hub，使用以下命令拉取
-`docker pull gyjgyj/ai_helping_coding_travel-frontend:latest`
-`docker pull gyjgyj/ai_helping_coding_travel-backend:latest`
++ image已经上传到docker hub，使用以下命令拉取
+    `docker pull gyjgyj/ai_helping_coding_travel-frontend:latest`
+    `docker pull gyjgyj/ai_helping_coding_travel-backend:latest`
++ 拉取后请用docker compose up -d启动
+
 
 
 ## 功能点介绍

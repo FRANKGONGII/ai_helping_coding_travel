@@ -42,15 +42,16 @@ public class AIController {
     public String askTravelPlan(@org.springframework.web.bind.annotation.RequestBody String question) throws IOException {
         System.out.println(question);
 
-        String apiKey = System.getenv("DEEPSEEK_API_KEY"); // 从环境变量获取 API Key
-        if (apiKey == null || apiKey.isEmpty()) {
-            throw new IllegalArgumentException("DEEPSEEK_API_KEY environment variable not set.");
-        }
+        // String apiKey = System.getenv("DEEPSEEK_API_KEY"); // 从环境变量获取 API Key
+        // if (apiKey == null || apiKey.isEmpty()) {
+        //     throw new IllegalArgumentException("DEEPSEEK_API_KEY environment variable not set.");
+        // }
 
 
-        if (apiKey == null || apiKey.isEmpty()) {
-            throw new IllegalArgumentException("DEEPSEEK_API_KEY environment variable not set.");
-        }
+        // if (apiKey == null || apiKey.isEmpty()) {
+        //     throw new IllegalArgumentException("DEEPSEEK_API_KEY environment variable not set.");
+        // }
+        String apiKey = "sk-ac1de879f40a4629a2f5f38653d3a5e3";
 
         Map<String, Object> messageSystem = new HashMap<>();
         messageSystem.put("role", "system");
@@ -118,11 +119,11 @@ public class AIController {
         System.out.println("要检查的id: " + travelPlanId);
         TravelPlan travelPlan = travelPlanService.findById(travelPlanId);
 
-        String apiKey = System.getenv("DEEPSEEK_API_KEY");
-        if (apiKey == null || apiKey.isEmpty()) {
-            throw new IllegalArgumentException("DEEPSEEK_API_KEY environment variable not set.");
-        }
-        // String apiKey = "sk-ac1de879f40a4629a2f5f38653d3a5e3";
+        // String apiKey = System.getenv("DEEPSEEK_API_KEY");
+        // if (apiKey == null || apiKey.isEmpty()) {
+        //     throw new IllegalArgumentException("DEEPSEEK_API_KEY environment variable not set.");
+        // }
+        String apiKey = "sk-ac1de879f40a4629a2f5f38653d3a5e3";
         if (apiKey == null || apiKey.isEmpty()) {
             throw new IllegalArgumentException("DEEPSEEK_API_KEY environment variable not set.");
         }
